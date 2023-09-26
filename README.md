@@ -3,6 +3,7 @@
 ![Static Badge](https://img.shields.io/badge/license-MIT-lightgray)
 ![Static Badge](https://img.shields.io/badge/iOS-15.0+-blue.svg)
 ![Static Badge](https://img.shields.io/badge/SPM-compatible-brightgreen)
+![SwiftUI](https://img.shields.io/badge/SwiftUI--orange)
 
 ## 🌟 Features
 - Swift Package Manager support 📦
