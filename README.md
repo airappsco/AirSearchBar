@@ -5,6 +5,9 @@
 ![Static Badge](https://img.shields.io/badge/SPM-compatible-brightgreen)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI--orange)
 
+![AirSearchBar_Project Banner_Github](https://github.com/airappsco/AirSearchBar/assets/122374124/196d8232-a811-42e7-b79c-eed7b864606b)
+
+
 ## 🌟 Features
 - Swift Package Manager support 📦
 
