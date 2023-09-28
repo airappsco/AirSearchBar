@@ -5,8 +5,9 @@
 //  Created by Gabriel on 26/09/23.
 //  Copyright © 2020 Air Apps. All rights reserved.
 
-import Foundation
 import Combine
+import Foundation
+import SwiftUI
 
 public class AirSearchBarViewModel: ObservableObject {
     // MARK: - Model
@@ -14,21 +15,37 @@ public class AirSearchBarViewModel: ObservableObject {
 
     // MARK: - Variables
     @Published var searchingText: String = ""
+    @Binding public var isSearching: Bool
 
+    var shouldForceHideSearchResults = false
     public var didSearchKeyword: ((String) -> Void)? = nil
     public var results: [SearchItem] {
         model.results
     }
 
+    public var shouldShowSearchResults: Bool {
+        results.isEmpty
+        ? false
+        : (results.count == 1 && results.first?.title == searchingText) == false
+    }
+
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializer
-    public init(initialDataSource: [String],
-                didSearchKeyword: ((String) -> Void)? = nil) {
+    public init(
+        initialDataSource: [String],
+        isSearching: Binding<Bool>,
+        didSearchKeyword: ((String) -> Void)? = nil
+    ) {
         self.model = SearchModel(dataSource: initialDataSource)
         self.didSearchKeyword = didSearchKeyword
+        _isSearching = isSearching
 
         self.bind()
+    }
+
+    func didSelectSearch(result: SearchItem) {
+        searchingText = result.title
     }
 }
 

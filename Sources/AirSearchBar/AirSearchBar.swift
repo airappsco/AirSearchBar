@@ -9,17 +9,12 @@ import Combine
 import SwiftUI
 
 public struct AirSearchBar: View {
-    @Binding var text: String
-    @Binding var isSearching: Bool
     @FocusState var focused: Bool
-    @State var shouldShowTableView: Bool = false
-    @State var forceHideTableView = false
 
-    @ObservedObject var viewModel: AirSearchBarViewModel = .init(initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"])
+    @ObservedObject var viewModel: AirSearchBarViewModel
 
-    public init(text: Binding<String>, isSearching: Binding<Bool>) {
-        _text = text
-        _isSearching = isSearching
+    public init(viewModel: AirSearchBarViewModel) {
+        self.viewModel = viewModel
     }
 
     public var body: some View {
@@ -35,11 +30,11 @@ public struct AirSearchBar: View {
         .padding(.top, Constants.Padding.padding8)
         .background(Color.clear)
         .onAppear {
-            isSearching = true
+            viewModel.isSearching = true
         }
         .onDisappear {
-            isSearching = false
-            text = ""
+            viewModel.isSearching = false
+            viewModel.searchingText = ""
         }
     }
 }
@@ -48,7 +43,7 @@ private extension AirSearchBar {
     // MARK: - Core Component
     func renderSearchBar() -> some View {
         LazyVStack(spacing: Constants.Padding.padding8) {
-            if shouldShowTableView {
+            if viewModel.shouldShowSearchResults {
                 renderSearchResultsView()
             }
 
@@ -65,23 +60,15 @@ private extension AirSearchBar {
 
             TextField(
                 "Search",
-                text: $text,
+                text: $viewModel.searchingText,
                 onEditingChanged: { _ in },
                 onCommit: {
                     // Handle search here if needed
                 }
             )
             .onAppear {
-                shouldShowTableView = text.isEmpty == false
                 focused = true
             }
-            .onChange(of: text, perform: { value in
-                viewModel.searchingText = value
-                shouldShowTableView = text.isEmpty == false
-            })
-            .onChange(of: forceHideTableView, perform: { value in
-                shouldShowTableView = false
-            })
             .padding(.leading, Constants.Padding.padding2)
             .background(.clear)
             .padding(.trailing, Constants.Padding.padding8)
@@ -89,17 +76,17 @@ private extension AirSearchBar {
             .frame(height: Constants.customSearchBarHeight)
 
             Button(action: {
-                self.text = ""
+                viewModel.searchingText = ""
             }) {
                 Image(systemName: Constants.SystemImage.xMarkCircleFill)
                     .foregroundColor(Constants.Colors.xMarkCircleFillForegroundColor)
             }
             .padding(.vertical, Constants.Padding.padding8)
             .padding(.horizontal, Constants.Padding.padding16)
-            .opacity(text.isEmpty ? 0 : 1)
+            .opacity(viewModel.searchingText.isEmpty ? 0 : 1)
         }
         .background(.white)
-        .cornerRadius(Constants.defaultCornerRadius, corners: shouldShowTableView ? [.bottomLeft, .bottomRight] : [.allCorners])
+        .cornerRadius(Constants.defaultCornerRadius, corners: viewModel.shouldShowSearchResults ? [.bottomLeft, .bottomRight] : [.allCorners])
         .padding(.horizontal, Constants.Padding.padding16)
         .padding(.bottom, Constants.Padding.padding32)
         .frame(height: Constants.customSearchBarHeight)
@@ -110,15 +97,14 @@ private extension AirSearchBar {
         LazyVStack {
             ScrollView(.vertical) {
                 LazyVStack(alignment: .leading) {
-                    ForEach(viewModel.results, id: \.self) { result in
+                    ForEach(viewModel.results, id: \.self) { item in
                         HStack {
-                            result.title.boldDifferenceFrom(text)
+                            item.title.boldDifferenceFrom(viewModel.searchingText)
                                 .font(Font.system(size: 17, weight: .light, design: .rounded))
                                 .padding([.leading, .trailing])
                                 .padding(.top, Constants.Padding.padding12)
                         }.onTapGesture {
-                            self.text = result.title
-                            forceHideTableView.toggle()
+                            viewModel.didSelectSearch(result: item)
                         }
                     }
                 }

@@ -25,12 +25,21 @@ struct ContentView: View {
             }
 
             if isSearching {
-                AirSearchBar(text: $searchText, isSearching: $isSearching)
+                AirSearchBar(
+                    viewModel: AirSearchBarViewModel(
+                        initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"],
+                        isSearching: $isSearching
+                    ) { something in
+                    print(something)
+                })
             }
         }
         .onTapGesture {
             hideKeyboard()
         }
+        .onChange(of: searchText, perform: { value in
+            print(searchText)
+        })
         .navigationBarItems(trailing:
                                 Button("Cancel") {
             hideKeyboard()
