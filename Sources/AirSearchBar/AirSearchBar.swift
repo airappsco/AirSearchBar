@@ -68,7 +68,7 @@ private extension AirSearchBar {
                 text: $viewModel.searchingText,
                 onEditingChanged: { _ in },
                 onCommit: {
-                    // Handle search here if needed
+                    viewModel.isSearching = false
                 }
             )
             .onAppear {
