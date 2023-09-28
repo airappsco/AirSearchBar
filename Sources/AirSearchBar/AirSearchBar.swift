@@ -12,9 +12,14 @@ public struct AirSearchBar: View {
     @FocusState var focused: Bool
 
     @ObservedObject var viewModel: AirSearchBarViewModel
+    @ObservedObject var style: Style
 
-    public init(viewModel: AirSearchBarViewModel) {
+    public init(
+        viewModel: AirSearchBarViewModel,
+        style: Style = .init()
+    ) {
         self.viewModel = viewModel
+        self.style = style
     }
 
     public var body: some View {
@@ -25,7 +30,7 @@ public struct AirSearchBar: View {
                 renderSearchBar()
             }
             .compositingGroup()
-            .shadow(color: Constants.Colors.defaultShadow, radius: 25, x: 0, y: 20)
+            .shadow(color: style.shadowColor, radius: 25, x: 0, y: 20)
         }
         .padding(.top, Constants.Padding.padding8)
         .background(Color.clear)
@@ -55,7 +60,7 @@ private extension AirSearchBar {
     func renderCustomSearchBar() -> some View {
         HStack {
             Image(systemName: Constants.SystemImage.magnifyingglass)
-                .foregroundColor(Constants.Colors.magnifyingglassIcon)
+                .foregroundColor(style.accentColor)
                 .padding(.leading, Constants.Padding.padding16)
 
             TextField(
@@ -79,13 +84,13 @@ private extension AirSearchBar {
                 viewModel.searchingText = ""
             }) {
                 Image(systemName: Constants.SystemImage.xMarkCircleFill)
-                    .foregroundColor(Constants.Colors.xMarkCircleFillForegroundColor)
+                    .foregroundColor(style.clearButtonColor)
             }
             .padding(.vertical, Constants.Padding.padding8)
             .padding(.horizontal, Constants.Padding.padding16)
             .opacity(viewModel.searchingText.isEmpty ? 0 : 1)
         }
-        .background(.white)
+        .background(style.backgroundColor)
         .cornerRadius(Constants.defaultCornerRadius, corners: viewModel.shouldShowSearchResults ? [.bottomLeft, .bottomRight] : [.allCorners])
         .padding(.horizontal, Constants.Padding.padding16)
         .padding(.bottom, Constants.Padding.padding32)
@@ -116,7 +121,7 @@ private extension AirSearchBar {
             renderDivider()
 
         }
-        .background(.white)
+        .background(style.backgroundColor)
         .cornerRadius(Constants.defaultCornerRadius, corners: [.topLeft, .topRight])
         .padding(.horizontal, Constants.Padding.padding16)
         .padding(.bottom, -Constants.Padding.padding8)
@@ -125,7 +130,7 @@ private extension AirSearchBar {
     // MARK: - Divider
     func renderDivider() -> some View {
         Rectangle()
-            .foregroundColor(Constants.Colors.dividerBackgroundColor)
+            .foregroundColor(style.dividerBackgroundColor)
             .frame(maxWidth: .infinity, minHeight: Constants.dividerHeight, maxHeight: Constants.dividerHeight)
             .padding(.horizontal, Constants.Padding.padding16)
             .padding(.bottom)
@@ -135,5 +140,32 @@ private extension AirSearchBar {
 public extension View {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+public extension AirSearchBar {
+    class Style: ObservableObject {
+        @Published public var backgroundColor: AnyShapeStyle
+        @Published public var foregroundColor: Color
+        @Published public var shadowColor: Color
+        @Published public var accentColor: Color
+        @Published public var clearButtonColor: Color
+        @Published public var dividerBackgroundColor: Color
+
+        public init(
+            backgroundColor: AnyShapeStyle = .init(Color.backgroundColor),
+            foregroundColor: Color = Color.foregroundColor,
+            shadowColor: Color = Color.defaultShadow,
+            accentColor: Color = Color.magnifyingglassIconColor,
+            clearButtonColor: Color = Color.xMarkCircleFillForegroundColor,
+            dividerBackgroundColor: Color = Color.dividerBackgroundColor
+        ) {
+            self.backgroundColor = backgroundColor
+            self.foregroundColor = foregroundColor
+            self.shadowColor = shadowColor
+            self.accentColor = accentColor
+            self.clearButtonColor = clearButtonColor
+            self.dividerBackgroundColor = dividerBackgroundColor
+        }
     }
 }
