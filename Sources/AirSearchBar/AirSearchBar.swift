@@ -137,12 +137,6 @@ private extension AirSearchBar {
     }
 }
 
-public extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
 public extension AirSearchBar {
     class Style: ObservableObject {
         @Published public var backgroundColor: AnyShapeStyle
