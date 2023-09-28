@@ -5,20 +5,40 @@
 //  Created by Gabriel on 26/09/23.
 //
 
+import AirSearchBar
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
+    @State private var searchText = ""
+    @State private var isSearching = true
 
-#Preview {
-    ContentView()
+    var body: some View {
+        ZStack {
+            // Your main content here
+            Color.white
+                .edgesIgnoringSafeArea(.all)
+
+            Button {
+                isSearching = true
+            } label: {
+                Text("Tap to search")
+            }
+
+            if isSearching {
+                SearchBar(text: $searchText, isSearching: $isSearching)
+            }
+        }
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .navigationBarItems(trailing:
+                                Button("Cancel") {
+            hideKeyboard()
+            isSearching = false
+        }
+            .foregroundColor(.blue)
+            .padding(.trailing, 16)
+            .opacity(isSearching ? 1 : 0)
+        )
+    }
 }
