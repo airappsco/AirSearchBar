@@ -105,7 +105,7 @@ private extension AirSearchBar {
                     ForEach(viewModel.results, id: \.self) { item in
                         HStack {
                             item.title.boldDifferenceFrom(viewModel.searchingText)
-                                .font(Font.system(size: 17, weight: .light, design: .rounded))
+                                .font(style.font)
                                 .padding([.leading, .trailing])
                                 .padding(.top, Constants.Padding.padding12)
                         }.onTapGesture {
@@ -151,6 +151,7 @@ public extension AirSearchBar {
         @Published public var accentColor: Color
         @Published public var clearButtonColor: Color
         @Published public var dividerBackgroundColor: Color
+        @Published public var font: Font
 
         public init(
             backgroundColor: AnyShapeStyle = .init(Color.backgroundColor),
@@ -158,7 +159,8 @@ public extension AirSearchBar {
             shadowColor: Color = Color.defaultShadow,
             accentColor: Color = Color.magnifyingglassIconColor,
             clearButtonColor: Color = Color.xMarkCircleFillForegroundColor,
-            dividerBackgroundColor: Color = Color.dividerBackgroundColor
+            dividerBackgroundColor: Color = Color.dividerBackgroundColor,
+            font: Font = Font.system(size: 17, weight: .regular)
         ) {
             self.backgroundColor = backgroundColor
             self.foregroundColor = foregroundColor
@@ -166,6 +168,7 @@ public extension AirSearchBar {
             self.accentColor = accentColor
             self.clearButtonColor = clearButtonColor
             self.dividerBackgroundColor = dividerBackgroundColor
+            self.font = font
         }
     }
 }
