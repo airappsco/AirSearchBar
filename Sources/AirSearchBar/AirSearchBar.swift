@@ -8,97 +8,6 @@
 import Combine
 import SwiftUI
 
-import Foundation
-import Combine
-
-enum AutoCompleteError: Error {
-    case notFound
-}
-
-public struct SpotlightItem: Identifiable, Hashable {
-    public var id = UUID()
-    var name: String
-}
-
-class SpotlightSearchModel {
-    public var dataSource: [SpotlightItem]
-    public var results: [SpotlightItem] = []
-
-    init(dataSource: [String]) {
-        self.dataSource = dataSource.map { SpotlightItem(name:$0) }
-    }
-}
-
-// MARK: - Private Methods
-extension SpotlightSearchModel {
-    public func searchItems(forKeyword searchingText: String) -> Void {
-        if self.dataSource.count >= 1 {
-            let founds = self.dataSource
-                .filter {
-                    if searchingText == "" {
-                        return false
-                    } else {
-                        return $0
-                            .name
-                            .lowercased()
-                            .contains(searchingText.lowercased())
-                    }
-            }
-
-            self.results = founds
-
-        }
-    }
-
-}
-
-public class AirSearchBarViewModel: ObservableObject {
-    // MARK: - Model
-    @Published private var model: SpotlightSearchModel
-
-    // MARK: - Variables
-    @Published var searchingText: String = ""
-
-    public var didSearchKeyword: ((String) -> Void)? = nil
-    public var results: [SpotlightItem] {
-        model.results
-    }
-
-    private var cancellables = Set<AnyCancellable>()
-
-    // MARK: - Initializer
-    public init(initialDataSource: [String],
-                didSearchKeyword: ((String) -> Void)? = nil) {
-        self.model = SpotlightSearchModel(dataSource: initialDataSource)
-        self.didSearchKeyword = didSearchKeyword
-
-        self.bind()
-    }
-}
-
-// MARK: - Public Methods
-extension AirSearchBarViewModel {
-    public func update(dataSource: [String]) {
-        model.dataSource = dataSource.map { SpotlightItem(name:$0) }
-    }
-}
-
-// MARK: - Private Methods
-extension AirSearchBarViewModel {
-    private func bind() {
-
-        $searchingText
-            .debounce(for: .seconds(0.0),
-                      scheduler: DispatchQueue.global(qos:.userInitiated))
-            .sink(receiveValue: { [weak self] searchText in
-                self?.model.searchItems(forKeyword:searchText)
-                self?.didSearchKeyword?(searchText)
-            })
-            .store(in: &cancellables)
-    }
-}
-
-
 public struct AirSearchBar: View {
     @Binding var text: String
     @Binding var isSearching: Bool
@@ -106,7 +15,7 @@ public struct AirSearchBar: View {
     @State var shouldShowTableView: Bool = false
     @State var forceHideTableView = false
 
-    @ObservedObject var viewModel: AirSearchBarViewModel = .init(initialDataSource: [])
+    @ObservedObject var viewModel: AirSearchBarViewModel = .init(initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"])
 
     public init(text: Binding<String>, isSearching: Binding<Bool>) {
         _text = text
@@ -177,6 +86,7 @@ private extension AirSearchBar {
             .background(.clear)
             .padding(.trailing, Constants.Padding.padding8)
             .focused($focused)
+            .frame(height: Constants.customSearchBarHeight)
 
             Button(action: {
                 self.text = ""
@@ -202,12 +112,12 @@ private extension AirSearchBar {
                 LazyVStack(alignment: .leading) {
                     ForEach(viewModel.results, id: \.self) { result in
                         HStack {
-                            result.name.boldDifferenceFrom(text)
+                            result.title.boldDifferenceFrom(text)
                                 .font(Font.system(size: 17, weight: .light, design: .rounded))
                                 .padding([.leading, .trailing])
                                 .padding(.top, Constants.Padding.padding12)
                         }.onTapGesture {
-                            self.text = result.name
+                            self.text = result.title
                             forceHideTableView.toggle()
                         }
                     }

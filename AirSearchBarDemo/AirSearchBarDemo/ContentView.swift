@@ -25,7 +25,7 @@ struct ContentView: View {
             }
 
             if isSearching {
-                SearchBar(text: $searchText, isSearching: $isSearching)
+                AirSearchBar(text: $searchText, isSearching: $isSearching)
             }
         }
         .onTapGesture {
