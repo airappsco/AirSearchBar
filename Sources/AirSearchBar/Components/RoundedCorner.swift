@@ -2,8 +2,9 @@
 //  RoundedCorner.swift
 //  AirSearchBar
 //
-//  Created by Gabriel on 28/09/23.
-//  Copyright © 2020 Air Apps. All rights reserved.
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 AirApps. All rights reserved.
+//
 
 import SwiftUI
 

@@ -2,8 +2,9 @@
 //  AirSearchBar.swift
 //  AirSearchBar
 //
-//  Created by Gabriel on 26/09/23.
-//  Copyright © 2020 Air Apps. All rights reserved.
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 AirApps. All rights reserved.
+//
 
 import Combine
 import SwiftUI
@@ -80,12 +81,15 @@ private extension AirSearchBar {
             .focused($focused)
             .frame(height: Constants.customSearchBarHeight)
 
-            Button(action: {
-                viewModel.searchingText = ""
-            }) {
-                Image(systemName: Constants.SystemImage.xMarkCircleFill)
-                    .foregroundColor(style.clearButtonColor)
-            }
+            Button(
+                action: {
+                    viewModel.searchingText = ""
+                },
+                label: {
+                    Image(systemName: Constants.SystemImage.xMarkCircleFill)
+                        .foregroundColor(style.clearButtonColor)
+                }
+            )
             .padding(.vertical, Constants.Padding.padding8)
             .padding(.horizontal, Constants.Padding.padding16)
             .opacity(viewModel.searchingText.isEmpty ? 0 : 1)
@@ -119,7 +123,6 @@ private extension AirSearchBar {
             .padding(.horizontal, Constants.Padding.padding12)
 
             renderDivider()
-
         }
         .background(style.backgroundColor)
         .cornerRadius(Constants.defaultCornerRadius, corners: [.topLeft, .topRight])

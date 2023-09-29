@@ -1,12 +1,13 @@
+//
+//  AirSearchBarTests.swift
+//  AirSearchBar
+//
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 AirApps. All rights reserved.
+//
+
+// swiftlint:disable sorted_imports
 import XCTest
 @testable import AirSearchBar
 
 final class AirSearchBarTests: XCTestCase {
-    func testExample() throws {
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
-
-        // Defining Test Cases and Test Methods
-        // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
-    }
-}

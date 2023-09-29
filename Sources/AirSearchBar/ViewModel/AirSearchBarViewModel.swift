@@ -2,8 +2,9 @@
 //  AirSearchBarViewModel.swift
 //  AirSearchBar
 //
-//  Created by Gabriel on 26/09/23.
-//  Copyright © 2020 Air Apps. All rights reserved.
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 AirApps. All rights reserved.
+//
 
 import Combine
 import Foundation
@@ -18,7 +19,7 @@ public class AirSearchBarViewModel: ObservableObject {
     @Binding public var isSearching: Bool
 
     var shouldForceHideSearchResults = false
-    public var didSearchKeyword: ((String) -> Void)? = nil
+    public var didSearchKeyword: ((String) -> Void)?
     public var results: [SearchItem] {
         model.results
     }
@@ -62,22 +63,22 @@ private extension AirSearchBarViewModel {
         $searchingText
             .debounce(
                 for: .seconds(0.0),
-                scheduler: DispatchQueue.global(qos:.userInitiated)
+                scheduler: DispatchQueue.global(qos: .userInitiated)
             )
             .sink(
                 receiveValue: { [weak self] searchText in
-                    self?.searchItems(forKeyword:searchText)
+                    self?.searchItems(forKeyword: searchText)
                     self?.didSearchKeyword?(searchText)
                 }
             )
             .store(in: &cancellables)
     }
 
-    func searchItems(forKeyword searchingText: String) -> Void {
+    func searchItems(forKeyword searchingText: String) {
         if self.model.dataSource.count >= 1 {
             let founds = self.model.dataSource
                 .filter {
-                    if searchingText == "" {
+                    if searchingText.isEmpty {
                         return false
                     } else {
                         return $0
