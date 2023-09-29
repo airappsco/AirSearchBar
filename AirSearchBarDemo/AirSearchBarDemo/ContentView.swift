@@ -2,7 +2,8 @@
 //  ContentView.swift
 //  AirSearchBarDemo
 //
-//  Created by Gabriel on 26/09/23.
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 AirApps. All rights reserved.
 //
 
 import AirSearchBar
@@ -31,24 +32,25 @@ struct ContentView: View {
                         initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"],
                         isSearching: $isSearching
                     ) { something in
-                    print(something)
-                })
+                        print(something)
+                    })
             }
         }
         .onTapGesture {
             hideKeyboard()
         }
-        .onChange(of: searchText, perform: { value in
+        .onChange(of: searchText, perform: { _ in
             print(searchText)
         })
-        .navigationBarItems(trailing:
-                                Button("Cancel") {
-            hideKeyboard()
-            isSearching = false
-        }
-            .foregroundColor(.blue)
-            .padding(.trailing, 16)
-            .opacity(isSearching ? 1 : 0)
+        .navigationBarItems(
+            trailing:
+                Button("Cancel") {
+                    hideKeyboard()
+                    isSearching = false
+                }
+                .foregroundColor(.blue)
+                .padding(.trailing, 16)
+                .opacity(isSearching ? 1 : 0)
         )
     }
 }

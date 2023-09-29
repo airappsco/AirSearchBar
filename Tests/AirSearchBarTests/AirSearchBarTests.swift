@@ -11,3 +11,5 @@ import XCTest
 @testable import AirSearchBar
 
 final class AirSearchBarTests: XCTestCase {
+}
+// swiftlint:enable sorted_imports
