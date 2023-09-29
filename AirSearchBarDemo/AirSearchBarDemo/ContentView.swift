@@ -26,6 +26,7 @@ struct ContentView: View {
 
             if isSearching {
                 AirSearchBar(
+                    style: .init(placeholder: "Search..."),
                     viewModel: AirSearchBarViewModel(
                         initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"],
                         isSearching: $isSearching

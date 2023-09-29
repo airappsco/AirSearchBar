@@ -15,8 +15,8 @@ public struct AirSearchBar: View {
     @ObservedObject var style: Style
 
     public init(
-        viewModel: AirSearchBarViewModel,
-        style: Style = .init()
+        style: Style,
+        viewModel: AirSearchBarViewModel
     ) {
         self.viewModel = viewModel
         self.style = style
@@ -64,7 +64,7 @@ private extension AirSearchBar {
                 .padding(.leading, Constants.Padding.padding16)
 
             TextField(
-                "Search",
+                style.placeholder,
                 text: $viewModel.searchingText,
                 onEditingChanged: { _ in },
                 onCommit: {
@@ -146,6 +146,7 @@ public extension AirSearchBar {
         @Published public var clearButtonColor: Color
         @Published public var dividerBackgroundColor: Color
         @Published public var font: Font
+        @Published public var placeholder: String
 
         public init(
             backgroundColor: AnyShapeStyle = .init(Color.backgroundColor),
@@ -154,7 +155,8 @@ public extension AirSearchBar {
             accentColor: Color = Color.magnifyingglassIconColor,
             clearButtonColor: Color = Color.xMarkCircleFillForegroundColor,
             dividerBackgroundColor: Color = Color.dividerBackgroundColor,
-            font: Font = Font.system(size: 17, weight: .regular)
+            font: Font = Font.system(size: 17, weight: .regular),
+            placeholder: String
         ) {
             self.backgroundColor = backgroundColor
             self.foregroundColor = foregroundColor
@@ -163,6 +165,7 @@ public extension AirSearchBar {
             self.clearButtonColor = clearButtonColor
             self.dividerBackgroundColor = dividerBackgroundColor
             self.font = font
+            self.placeholder = placeholder
         }
     }
 }
