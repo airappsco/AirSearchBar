@@ -144,7 +144,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		C0C527202AC3461700083B83 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -155,7 +155,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${SRCROOT}/../\"\n./Submodules/WeTransfer-iOS-CI/BuildTools/swiftlint.sh\n";
 		};

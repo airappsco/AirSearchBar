@@ -11,7 +11,11 @@ import SwiftUI
 struct AirSearchBarDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                ContentView()
+                    .toolbarTitleDisplayMode(.inline)
+                    .navigationBarTitle("Search Example")
+            }
         }
     }
 }
