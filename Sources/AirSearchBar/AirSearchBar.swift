@@ -15,12 +15,16 @@ public struct AirSearchBar: View {
     @ObservedObject var viewModel: AirSearchBarViewModel
     @ObservedObject var style: Style
 
+    @Binding public var analyticsSubject: PassthroughSubject<AirSearchBarAnalytics, Never>?
+
     public init(
         style: Style,
+        analyticsSubject: Binding<PassthroughSubject<AirSearchBarAnalytics, Never>?>? = nil,
         viewModel: AirSearchBarViewModel
     ) {
         self.viewModel = viewModel
         self.style = style
+        _analyticsSubject = analyticsSubject ?? Binding.constant(nil)
     }
 
     public var body: some View {
@@ -36,6 +40,7 @@ public struct AirSearchBar: View {
         .padding(.top, Constants.Padding.padding8)
         .background(Color.clear)
         .onAppear {
+            logAnalytics(event: .didStartSearching)
             viewModel.isSearching = true
         }
         .onDisappear {
@@ -69,6 +74,11 @@ private extension AirSearchBar {
                 text: $viewModel.searchingText,
                 onEditingChanged: { _ in },
                 onCommit: {
+                    logAnalytics(
+                        event: .didFinishSearching, parameters: [
+                            .keyword: viewModel.searchingText
+                        ]
+                    )
                     viewModel.isSearching = false
                 }
             )
@@ -138,6 +148,14 @@ private extension AirSearchBar {
             .padding(.horizontal, Constants.Padding.padding16)
             .padding(.bottom)
     }
+
+    // MARK: - Log analytics
+    func logAnalytics(
+        event: AirSearchBarAnalyticsEvent,
+        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
+    ) {
+        analyticsSubject?.send((event, parameters))
+    }
 }
 
 public extension AirSearchBar {
@@ -171,4 +189,11 @@ public extension AirSearchBar {
             self.placeholder = placeholder
         }
     }
+}
+
+public extension AirSearchBar {
+    typealias AirSearchBarAnalytics = (
+        AirSearchBarAnalyticsEvent,
+        [AirSearchBarAnalyticsParameter:AnalyticsProperty]
+    )
 }
