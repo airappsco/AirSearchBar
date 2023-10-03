@@ -26,8 +26,8 @@ public extension String {
     }
 
     func boldDifferenceFrom(_ original: String) -> Text {
-        let commonPrefix = self.commonPrefix(with: original)
-        let commonSuffix = self.commonSuffix(with: original)
+        let commonPrefix = self.lowercased().commonPrefix(with: original.lowercased())
+        let commonSuffix = self.lowercased().commonSuffix(with: original.lowercased())
 
         let prefixText = Text(commonPrefix)
         let suffixText = Text(commonSuffix)

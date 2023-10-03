@@ -7,17 +7,23 @@
 //
 
 import Foundation
+import SwiftUI
 
 public struct SearchItem: Identifiable, Hashable {
     public var id = UUID()
     var title: String
+
+    public init(id: UUID = UUID(), title: String) {
+        self.id = id
+        self.title = title
+    }
 }
 
 class SearchModel {
-    public var dataSource: [SearchItem]
+    @Binding public var dataSource: [SearchItem]
     public var results: [SearchItem] = []
 
-    init(dataSource: [String]) {
-        self.dataSource = dataSource.map { SearchItem(title: $0) }
+    init(dataSource: Binding<[SearchItem]>) {
+        _dataSource = dataSource
     }
 }

@@ -16,10 +16,11 @@ public class AirSearchBarViewModel: ObservableObject {
 
     // MARK: - Variables
     @Published var searchingText: String = ""
-    @Binding public var isSearching: Bool
+
+    @Binding public var didSearchKeyword: PassthroughSubject<String, Never>?
+    @Binding public var didFinishSearchKeyword: PassthroughSubject<String, Never>?
 
     var shouldForceHideSearchResults = false
-    public var didSearchKeyword: ((String) -> Void)?
     public var results: [SearchItem] {
         model.results
     }
@@ -34,13 +35,13 @@ public class AirSearchBarViewModel: ObservableObject {
 
     // MARK: - Initializer
     public init(
-        initialDataSource: [String],
-        isSearching: Binding<Bool>,
-        didSearchKeyword: ((String) -> Void)? = nil
+        initialDataSource: Binding<[SearchItem]>,
+        didSearchKeyword: Binding<PassthroughSubject<String, Never>?>? = nil,
+        didFinishSearchKeyword: Binding<PassthroughSubject<String, Never>?>? = nil
     ) {
         self.model = SearchModel(dataSource: initialDataSource)
-        self.didSearchKeyword = didSearchKeyword
-        _isSearching = isSearching
+        _didSearchKeyword = didSearchKeyword ?? Binding.constant(nil)
+        _didFinishSearchKeyword = didFinishSearchKeyword ?? Binding.constant(nil)
 
         self.bind()
     }
@@ -68,7 +69,10 @@ private extension AirSearchBarViewModel {
             .sink(
                 receiveValue: { [weak self] searchText in
                     self?.searchItems(forKeyword: searchText)
-                    self?.didSearchKeyword?(searchText)
+
+                    DispatchQueue.main.async {
+                        self?.didSearchKeyword?.send(searchText)
+                    }
                 }
             )
             .store(in: &cancellables)

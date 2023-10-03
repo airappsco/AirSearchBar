@@ -11,18 +11,28 @@ import Combine
 import SwiftUI
 
 struct ContentView: View {
-    @State private var searchText = ""
     @State private var isSearching = true
 
     @State private var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never>? = .init()
+    @State private var didSearchKeywordSubject: PassthroughSubject<String, Never>? = .init()
+    @State private var didFinishSearchKeywordSubject: PassthroughSubject<String, Never>? = .init()
 
     var analyticsPublisher: AnyPublisher<AirSearchBar.AirSearchBarAnalytics, Never> {
         analyticsSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
     }
 
+    var didSearchKeywordPublisher: AnyPublisher<String, Never> {
+        didSearchKeywordSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+    }
+
+    var didFinishSearchKeywordPublisher: AnyPublisher<String, Never> {
+        didFinishSearchKeywordSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+    }
+
+    @State var searchDataSource: [SearchItem] = [""].map { .init(title: $0) }
+
     var body: some View {
         ZStack {
-            // Your main content here
             Color.white
                 .edgesIgnoringSafeArea(.all)
 
@@ -34,22 +44,20 @@ struct ContentView: View {
 
             if isSearching {
                 AirSearchBar(
-                    style: .init(placeholder: "Search..."),
+                    style: .init(placeholder: "Search..."), 
+                    isSearching: $isSearching,
                     analyticsSubject: $analyticsSubject,
                     viewModel: AirSearchBarViewModel(
-                        initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"],
-                        isSearching: $isSearching
-                    ) { something in
-                        print(something)
-                    })
+                        initialDataSource: $searchDataSource,
+                        didSearchKeyword: $didSearchKeywordSubject,
+                        didFinishSearchKeyword: $didFinishSearchKeywordSubject
+                    )
+                )
             }
         }
         .onTapGesture {
             hideKeyboard()
         }
-        .onChange(of: searchText, perform: { _ in
-            print(searchText)
-        })
         .navigationBarItems(
             trailing:
                 Button("Cancel") {
@@ -62,6 +70,15 @@ struct ContentView: View {
         )
         .onReceive(analyticsPublisher, perform: { event in
             print(event)
+        })
+        .onReceive(didSearchKeywordPublisher, perform: { keyword in
+            if keyword.isEmpty == false {
+                searchDataSource = [.init(title: "navigation"), .init(title: "nagotioation")]
+                print("didSearchKeywordPublisher: \(keyword)")
+            }
+        })
+        .onReceive(didFinishSearchKeywordPublisher, perform: { keyword in
+            print("didFinishSearchKeywordPublisher: \(keyword)")
         })
     }
 }

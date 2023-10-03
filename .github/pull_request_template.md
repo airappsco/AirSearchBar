@@ -1,7 +1,7 @@
 ## Linked tickets?
 Please provide links to any associated tickets or issues
-- https://github.com/airappsco/RepositoryName/issues/XXX
-- https://airappsco.atlassian.net/browse/IOSPRO-YY
+- https://github.com/airappsco/AirSearchBar/issues/XXX
+- https://airappsco.atlassian.net/browse/IOSJOB-YY
 
 ## Checklist
 - [] My code follows the style guidelines of this project (please refer to CONTRIBUTING.md).
