@@ -29,7 +29,7 @@ struct ContentView: View {
         didFinishSearchKeywordSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
     }
 
-    @State var searchDataSource: [SearchItem] = [""].map { .init(title: $0) }
+    @State var searchDataSource: [SearchItem] = ["Nebulizer", "Nebulize", "Nebulous", "Nebula"].map { .init(title: $0) }
 
     var body: some View {
         ZStack {
@@ -73,7 +73,6 @@ struct ContentView: View {
         })
         .onReceive(didSearchKeywordPublisher, perform: { keyword in
             if keyword.isEmpty == false {
-                searchDataSource = [.init(title: "navigation"), .init(title: "nagotioation")]
                 print("didSearchKeywordPublisher: \(keyword)")
             }
         })
