@@ -7,11 +7,18 @@
 //
 
 import AirSearchBar
+import Combine
 import SwiftUI
 
 struct ContentView: View {
     @State private var searchText = ""
     @State private var isSearching = true
+
+    @State private var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never>? = .init()
+
+    var analyticsPublisher: AnyPublisher<AirSearchBar.AirSearchBarAnalytics, Never> {
+        analyticsSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+    }
 
     var body: some View {
         ZStack {
@@ -28,6 +35,7 @@ struct ContentView: View {
             if isSearching {
                 AirSearchBar(
                     style: .init(placeholder: "Search..."),
+                    analyticsSubject: $analyticsSubject,
                     viewModel: AirSearchBarViewModel(
                         initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"],
                         isSearching: $isSearching
@@ -52,6 +60,9 @@ struct ContentView: View {
                 .padding(.trailing, 16)
                 .opacity(isSearching ? 1 : 0)
         )
+        .onReceive(analyticsPublisher, perform: { event in
+            print(event)
+        })
     }
 }
 
