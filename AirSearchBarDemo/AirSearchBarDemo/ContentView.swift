@@ -13,23 +13,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var isSearching = true
 
-    @State private var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never>? = .init()
-    @State private var didSearchKeywordSubject: PassthroughSubject<String, Never>? = .init()
-    @State private var didFinishSearchKeywordSubject: PassthroughSubject<String, Never>? = .init()
-
-    var analyticsPublisher: AnyPublisher<AirSearchBar.AirSearchBarAnalytics, Never> {
-        analyticsSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
-    }
-
-    var didSearchKeywordPublisher: AnyPublisher<String, Never> {
-        didSearchKeywordSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
-    }
-
-    var didFinishSearchKeywordPublisher: AnyPublisher<String, Never> {
-        didFinishSearchKeywordSubject?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
-    }
-
-    @State var searchDataSource: [SearchItem] = ["Nebulizer", "Nebulize", "Nebulous", "Nebula"].map { .init(title: $0) }
+    var airSearchBarViewModel = AirSearchBarViewModel(
+        initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"]
+    )
 
     var body: some View {
         ZStack {
@@ -46,12 +32,7 @@ struct ContentView: View {
                 AirSearchBar(
                     style: .init(placeholder: "Search..."), 
                     isSearching: $isSearching,
-                    analyticsSubject: $analyticsSubject,
-                    viewModel: AirSearchBarViewModel(
-                        initialDataSource: $searchDataSource,
-                        didSearchKeyword: $didSearchKeywordSubject,
-                        didFinishSearchKeyword: $didFinishSearchKeywordSubject
-                    )
+                    viewModel: airSearchBarViewModel
                 )
             }
         }
@@ -68,15 +49,16 @@ struct ContentView: View {
                 .padding(.trailing, 16)
                 .opacity(isSearching ? 1 : 0)
         )
-        .onReceive(analyticsPublisher, perform: { event in
+        .onReceive(airSearchBarViewModel.analyticsSubject, perform: { event in
             print(event)
         })
-        .onReceive(didSearchKeywordPublisher, perform: { keyword in
+        .onReceive(airSearchBarViewModel.didSearchKeywordSubject, perform: { keyword in
             if keyword.isEmpty == false {
+                airSearchBarViewModel.update(dataSource: ["Star Wars"])
                 print("didSearchKeywordPublisher: \(keyword)")
             }
         })
-        .onReceive(didFinishSearchKeywordPublisher, perform: { keyword in
+        .onReceive(airSearchBarViewModel.didFinishSearchKeywordSubject, perform: { keyword in
             print("didFinishSearchKeywordPublisher: \(keyword)")
         })
     }

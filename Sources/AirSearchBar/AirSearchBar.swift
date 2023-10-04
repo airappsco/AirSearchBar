@@ -15,19 +15,17 @@ public struct AirSearchBar: View {
     @ObservedObject var viewModel: AirSearchBarViewModel
     @ObservedObject var style: Style
 
-    @Binding public var analyticsSubject: PassthroughSubject<AirSearchBarAnalytics, Never>?
     @Binding public var isSearching: Bool
 
     public init(
         style: Style,
         isSearching: Binding<Bool>,
-        analyticsSubject: Binding<PassthroughSubject<AirSearchBarAnalytics, Never>?>? = nil,
+        analyticsSubject: PassthroughSubject<AirSearchBarAnalytics, Never>? = nil,
         viewModel: AirSearchBarViewModel
     ) {
         self.viewModel = viewModel
         self.style = style
         _isSearching = isSearching
-        _analyticsSubject = analyticsSubject ?? Binding.constant(nil)
     }
 
     public var body: some View {
@@ -43,7 +41,7 @@ public struct AirSearchBar: View {
         .padding(.top, Constants.Padding.padding8)
         .background(.clear)
         .onAppear {
-            logAnalytics(event: .didStartSearching)
+            viewModel.logAnalytics(event: .didStartSearching)
             isSearching = true
         }
         .onDisappear {
@@ -101,8 +99,8 @@ private extension AirSearchBar {
             text: $viewModel.searchingText,
             onEditingChanged: { _ in },
             onCommit: {
-                logAnalytics(event: .didFinishSearching, parameters: [.keyword: viewModel.searchingText])
-                viewModel.didFinishSearchKeyword?.send(viewModel.searchingText)
+                viewModel.logAnalytics(event: .didFinishSearching, parameters: [.keyword: viewModel.searchingText])
+                viewModel.didFinishSearchKeywordSubject.send(viewModel.searchingText)
                 isSearching = false
             }
         )
@@ -152,14 +150,6 @@ private extension AirSearchBar {
             .frame(maxWidth: .infinity, minHeight: Constants.dividerHeight, maxHeight: Constants.dividerHeight)
             .padding(.horizontal, Constants.Padding.padding16)
             .padding(.bottom)
-    }
-
-    // MARK: - Log analytics
-    func logAnalytics(
-        event: AirSearchBarAnalyticsEvent,
-        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
-    ) {
-        analyticsSubject?.send((event, parameters))
     }
 }
 
