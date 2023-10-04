@@ -13,7 +13,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var isSearching = true
 
-    var airSearchBarViewModel = AirSearchBarViewModel(
+    let airSearchBarViewModel = AirSearchBarViewModel(
         initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"]
     )
 

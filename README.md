@@ -29,23 +29,22 @@ import AirSearchBar
 
 Initialize the AirSearchBar with the needed parameters
 ```swift
+    let airSearchBarViewModel = AirSearchBarViewModel(
+        initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"]
+    )
+
     AirSearchBar(
         style: .init(placeholder: "Search..."), 
         isSearching: $isSearching,
-        analyticsSubject: $analyticsSubject,
-        viewModel: AirSearchBarViewModel(
-            initialDataSource: $searchDataSource,
-            didSearchKeyword: $didSearchKeywordSubject,
-            didFinishSearchKeyword: $didFinishSearchKeywordSubject
-        )
+        viewModel: airSearchBarViewModel
     )
 ```
 
 To update the dataSource from view model do the following:
 ```swift
-    .onReceive(didSearchKeywordPublisher, perform: { keyword in
+    .onReceive(airSearchBarViewModel.didSearchKeywordSubject, perform: { keyword in
         if keyword.isEmpty == false {
-            searchDataSource = [.init(title: "navigation"), .init(title: "nagotioation")]
+            airSearchBarViewModel.update(dataSource: ["Star Wars"])
             print("didSearchKeywordPublisher: \(keyword)")
         }
     })
@@ -53,14 +52,14 @@ To update the dataSource from view model do the following:
 
 To handle the search when finished do the following: 
 ```swift
-    .onReceive(didFinishSearchKeywordPublisher, perform: { keyword in
+    .onReceive(airSearchBarViewModel.didFinishSearchKeywordSubject, perform: { keyword in
         print("didFinishSearchKeywordPublisher: \(keyword)")
     })
 ```
 
 To handle analytics do the following: 
 ```swift
-    .onReceive(analyticsPublisher, perform: { event in
+    .onReceive(airSearchBarViewModel.analyticsSubject, perform: { event in
         print(event)
     })
 ```
