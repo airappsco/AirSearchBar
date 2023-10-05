@@ -8,16 +8,16 @@
 
 import Foundation
 
-public struct SearchItem: Identifiable, Hashable {
-    public var id = UUID()
+struct SearchItem: Identifiable, Hashable {
+    var id = UUID()
     var title: String
 }
 
-class SearchModel {
-    public var dataSource: [SearchItem]
-    public var results: [SearchItem] = []
+class SearchModel: ObservableObject {
+    @Published var dataSource: [SearchItem]
+    var results: [SearchItem] = []
 
     init(dataSource: [String]) {
-        self.dataSource = dataSource.map { SearchItem(title: $0) }
+        self.dataSource = dataSource.map { .init(title: $0) }
     }
 }

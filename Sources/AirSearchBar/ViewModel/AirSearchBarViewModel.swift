@@ -16,37 +16,41 @@ public class AirSearchBarViewModel: ObservableObject {
 
     // MARK: - Variables
     @Published var searchingText: String = ""
-    @Binding public var isSearching: Bool
+    private var cancellables = Set<AnyCancellable>()
 
-    var shouldForceHideSearchResults = false
-    public var didSearchKeyword: ((String) -> Void)?
-    public var results: [SearchItem] {
-        model.results
-    }
-
+    // MARK: - Public variables
+    public var didSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
+    public var didFinishSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
+    public var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never> = .init()
     public var shouldShowSearchResults: Bool {
         results.isEmpty
         ? false
         : (results.count == 1 && results.first?.title == searchingText) == false
     }
 
-    private var cancellables = Set<AnyCancellable>()
+    var shouldForceHideSearchResults = false
+    var results: [SearchItem] {
+        model.results
+    }
 
     // MARK: - Initializer
     public init(
-        initialDataSource: [String],
-        isSearching: Binding<Bool>,
-        didSearchKeyword: ((String) -> Void)? = nil
+        initialDataSource: [String]
     ) {
         self.model = SearchModel(dataSource: initialDataSource)
-        self.didSearchKeyword = didSearchKeyword
-        _isSearching = isSearching
-
         self.bind()
     }
 
+    // MARK: - Package internal methods
     func didSelectSearch(result: SearchItem) {
         searchingText = result.title
+    }
+
+    func logAnalytics(
+        event: AirSearchBarAnalyticsEvent,
+        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
+    ) {
+        analyticsSubject.send((event, parameters))
     }
 }
 
@@ -68,7 +72,10 @@ private extension AirSearchBarViewModel {
             .sink(
                 receiveValue: { [weak self] searchText in
                     self?.searchItems(forKeyword: searchText)
-                    self?.didSearchKeyword?(searchText)
+
+                    DispatchQueue.main.async {
+                        self?.didSearchKeywordSubject.send(searchText)
+                    }
                 }
             )
             .store(in: &cancellables)
@@ -84,7 +91,7 @@ private extension AirSearchBarViewModel {
                         return $0
                             .title
                             .lowercased()
-                            .contains(searchingText.lowercased())
+                            .hasPrefix(searchingText.lowercased())
                     }
                 }
 

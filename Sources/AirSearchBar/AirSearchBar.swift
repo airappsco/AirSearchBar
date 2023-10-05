@@ -15,16 +15,17 @@ public struct AirSearchBar: View {
     @ObservedObject var viewModel: AirSearchBarViewModel
     @ObservedObject var style: Style
 
-    @Binding public var analyticsSubject: PassthroughSubject<AirSearchBarAnalytics, Never>?
+    @Binding public var isSearching: Bool
 
     public init(
         style: Style,
-        analyticsSubject: Binding<PassthroughSubject<AirSearchBarAnalytics, Never>?>? = nil,
+        isSearching: Binding<Bool>,
+        analyticsSubject: PassthroughSubject<AirSearchBarAnalytics, Never>? = nil,
         viewModel: AirSearchBarViewModel
     ) {
         self.viewModel = viewModel
         self.style = style
-        _analyticsSubject = analyticsSubject ?? Binding.constant(nil)
+        _isSearching = isSearching
     }
 
     public var body: some View {
@@ -38,13 +39,13 @@ public struct AirSearchBar: View {
             .shadow(color: style.shadowColor, radius: 25, x: 0, y: 20)
         }
         .padding(.top, Constants.Padding.padding8)
-        .background(Color.clear)
+        .background(.clear)
         .onAppear {
-            logAnalytics(event: .didStartSearching)
-            viewModel.isSearching = true
+            viewModel.logAnalytics(event: .didStartSearching)
+            isSearching = true
         }
         .onDisappear {
-            viewModel.isSearching = false
+            isSearching = false
             viewModel.searchingText = ""
         }
     }
@@ -69,27 +70,7 @@ private extension AirSearchBar {
                 .foregroundColor(style.accentColor)
                 .padding(.leading, Constants.Padding.padding16)
 
-            TextField(
-                style.placeholder,
-                text: $viewModel.searchingText,
-                onEditingChanged: { _ in },
-                onCommit: {
-                    logAnalytics(
-                        event: .didFinishSearching, parameters: [
-                            .keyword: viewModel.searchingText
-                        ]
-                    )
-                    viewModel.isSearching = false
-                }
-            )
-            .onAppear {
-                focused = true
-            }
-            .padding(.leading, Constants.Padding.padding2)
-            .background(.clear)
-            .padding(.trailing, Constants.Padding.padding8)
-            .focused($focused)
-            .frame(height: Constants.customSearchBarHeight)
+            renderSearchBarTextField()
 
             Button(
                 action: {
@@ -108,6 +89,28 @@ private extension AirSearchBar {
         .cornerRadius(Constants.defaultCornerRadius, corners: viewModel.shouldShowSearchResults ? [.bottomLeft, .bottomRight] : [.allCorners])
         .padding(.horizontal, Constants.Padding.padding16)
         .padding(.bottom, Constants.Padding.padding32)
+        .frame(height: Constants.customSearchBarHeight)
+    }
+
+    // MARK: - Search bar text field
+    func renderSearchBarTextField() -> some View {
+        TextField(
+            style.placeholder,
+            text: $viewModel.searchingText,
+            onEditingChanged: { _ in },
+            onCommit: {
+                viewModel.logAnalytics(event: .didFinishSearching, parameters: [.keyword: viewModel.searchingText])
+                viewModel.didFinishSearchKeywordSubject.send(viewModel.searchingText)
+                isSearching = false
+            }
+        )
+        .onAppear {
+            focused = true
+        }
+        .padding(.leading, Constants.Padding.padding2)
+        .background(.clear)
+        .padding(.trailing, Constants.Padding.padding8)
+        .focused($focused)
         .frame(height: Constants.customSearchBarHeight)
     }
 
@@ -148,14 +151,6 @@ private extension AirSearchBar {
             .padding(.horizontal, Constants.Padding.padding16)
             .padding(.bottom)
     }
-
-    // MARK: - Log analytics
-    func logAnalytics(
-        event: AirSearchBarAnalyticsEvent,
-        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
-    ) {
-        analyticsSubject?.send((event, parameters))
-    }
 }
 
 public extension AirSearchBar {
@@ -194,6 +189,6 @@ public extension AirSearchBar {
 public extension AirSearchBar {
     typealias AirSearchBarAnalytics = (
         AirSearchBarAnalyticsEvent,
-        [AirSearchBarAnalyticsParameter:AnalyticsProperty]
+        [AirSearchBarAnalyticsParameter: AnalyticsProperty]
     )
 }
