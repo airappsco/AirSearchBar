@@ -2,7 +2,8 @@
 //  AirSearchBarDemoApp.swift
 //  AirSearchBarDemo
 //
-//  Created by Gabriel on 26/09/23.
+//  Created by Gabriel on 26/09/2023.
+//  Copyright © 2023 Air Apps. All rights reserved.
 //
 
 import SwiftUI

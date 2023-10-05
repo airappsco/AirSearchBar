@@ -3,7 +3,7 @@
 //  AirSearchBarDemo
 //
 //  Created by Gabriel on 26/09/2023.
-//  Copyright © 2023 AirApps. All rights reserved.
+//  Copyright © 2023 Air Apps. All rights reserved.
 //
 
 import AirSearchBar
@@ -30,7 +30,7 @@ struct ContentView: View {
 
             if isSearching {
                 AirSearchBar(
-                    style: .init(placeholder: "Search..."), 
+                    style: .init(placeholder: "Search..."),
                     isSearching: $isSearching,
                     viewModel: airSearchBarViewModel
                 )

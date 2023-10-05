@@ -3,7 +3,7 @@
 //  AirSearchBar
 //
 //  Created by Gabriel on 26/09/2023.
-//  Copyright © 2023 AirApps. All rights reserved.
+//  Copyright © 2023 Air Apps. All rights reserved.
 //
 
 // swiftlint:disable sorted_imports
