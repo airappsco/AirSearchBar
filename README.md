@@ -27,6 +27,43 @@ Import module in the file which will be used in
 import AirSearchBar
 ```
 
+Initialize the AirSearchBar with the needed parameters
+```swift
+    let airSearchBarViewModel = AirSearchBarViewModel(
+        initialDataSource: ["Nebulizer", "Nebulize", "Nebulous", "Nebula"]
+    )
+
+    AirSearchBar(
+        style: .init(placeholder: "Search..."), 
+        isSearching: $isSearching,
+        viewModel: airSearchBarViewModel
+    )
+```
+
+To update the dataSource from view model do the following:
+```swift
+    .onReceive(airSearchBarViewModel.didSearchKeywordSubject, perform: { keyword in
+        if keyword.isEmpty == false {
+            airSearchBarViewModel.update(dataSource: ["Star Wars"])
+            print("didSearchKeywordPublisher: \(keyword)")
+        }
+    })
+```
+
+To handle the search when finished do the following: 
+```swift
+    .onReceive(airSearchBarViewModel.didFinishSearchKeywordSubject, perform: { keyword in
+        print("didFinishSearchKeywordPublisher: \(keyword)")
+    })
+```
+
+To handle analytics do the following: 
+```swift
+    .onReceive(airSearchBarViewModel.analyticsSubject, perform: { event in
+        print(event)
+    })
+```
+
 You can also check the **[Example project](./AirSearchBarDemo)** for usage.
 
 ## Contributing to Air Apps
