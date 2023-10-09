@@ -10,6 +10,7 @@ import Combine
 import Foundation
 import SwiftUI
 
+@available(iOS 15.0, *)
 public class AirSearchBarViewModel: ObservableObject {
     // MARK: - Model
     @Published private var model: SearchModel
@@ -55,6 +56,7 @@ public class AirSearchBarViewModel: ObservableObject {
 }
 
 // MARK: - Public Methods
+@available(iOS 15.0, *)
 extension AirSearchBarViewModel {
     public func update(dataSource: [String]) {
         model.dataSource = dataSource.map { SearchItem(title: $0) }
@@ -62,6 +64,7 @@ extension AirSearchBarViewModel {
 }
 
 // MARK: - Private Methods
+@available(iOS 15.0, *)
 private extension AirSearchBarViewModel {
     func bind() {
         $searchingText

@@ -8,11 +8,13 @@
 
 import Foundation
 
+@available(iOS 15.0, *)
 struct SearchItem: Identifiable, Hashable {
     var id = UUID()
     var title: String
 }
 
+@available(iOS 15.0, *)
 class SearchModel: ObservableObject {
     @Published var dataSource: [SearchItem]
     var results: [SearchItem] = []

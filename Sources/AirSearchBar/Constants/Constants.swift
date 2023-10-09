@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 public enum Constants {
     public static let customSearchBarHeight: CGFloat = 56
     public static let searchResultsViewMaxHeight: CGFloat = 236
@@ -28,6 +29,7 @@ public enum Constants {
     }
 }
 
+@available(iOS 15.0, *)
 extension Color {
     public static let defaultShadow: Color = .black.opacity(0.2)
     public static let magnifyingglassIconColor = Color(red: 0.04, green: 0.52, blue: 1)

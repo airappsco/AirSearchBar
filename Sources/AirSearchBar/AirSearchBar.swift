@@ -9,6 +9,7 @@
 import Combine
 import SwiftUI
 
+@available(iOS 15.0, *)
 public struct AirSearchBar: View {
     @FocusState var focused: Bool
 
@@ -51,6 +52,7 @@ public struct AirSearchBar: View {
     }
 }
 
+@available(iOS 15.0, *)
 private extension AirSearchBar {
     // MARK: - Core Component
     func renderSearchBar() -> some View {
@@ -153,6 +155,7 @@ private extension AirSearchBar {
     }
 }
 
+@available(iOS 15.0, *)
 public extension AirSearchBar {
     class Style: ObservableObject {
         @Published public var backgroundColor: AnyShapeStyle
@@ -186,6 +189,7 @@ public extension AirSearchBar {
     }
 }
 
+@available(iOS 15.0, *)
 public extension AirSearchBar {
     typealias AirSearchBarAnalytics = (
         AirSearchBarAnalyticsEvent,

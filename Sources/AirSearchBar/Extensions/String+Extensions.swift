@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 public extension String {
     func commonSuffix(with other: String) -> String {
         let selfReversed = String(self.reversed())
