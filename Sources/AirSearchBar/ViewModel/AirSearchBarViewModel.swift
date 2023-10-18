@@ -22,6 +22,7 @@ public class AirSearchBarViewModel: ObservableObject {
     // MARK: - Public variables
     public var didSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
     public var didFinishSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
+    public var onEditingChanged: PassthroughSubject<Bool, Never> = .init()
     public var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never> = .init()
     public var shouldShowSearchResults: Bool {
         results.isEmpty
