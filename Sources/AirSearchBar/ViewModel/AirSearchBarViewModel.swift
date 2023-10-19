@@ -50,7 +50,7 @@ public class AirSearchBarViewModel: ObservableObject {
 
     func logAnalytics(
         event: AirSearchBarAnalyticsEvent,
-        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
+        parameters: [AirSearchBarAnalyticsParameter: Any] = [:]
     ) {
         analyticsSubject.send((event, parameters))
     }
