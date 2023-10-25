@@ -191,6 +191,6 @@ public extension AirSearchBar {
 public extension AirSearchBar {
     typealias AirSearchBarAnalytics = (
         AirSearchBarAnalyticsEvent,
-        [AirSearchBarAnalyticsParameter: AnalyticsProperty]
+        [AirSearchBarAnalyticsParameter: Any]
     )
 }
