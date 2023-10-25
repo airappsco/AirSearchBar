@@ -21,6 +21,7 @@ public class AirSearchBarViewModel: ObservableObject {
     // MARK: - Public variables
     public var didSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
     public var didFinishSearchKeywordSubject: PassthroughSubject<String, Never> = .init()
+    public var onEditingChanged: PassthroughSubject<Bool, Never> = .init()
     public var analyticsSubject: PassthroughSubject<AirSearchBar.AirSearchBarAnalytics, Never> = .init()
     public var shouldShowSearchResults: Bool {
         results.isEmpty
@@ -48,7 +49,7 @@ public class AirSearchBarViewModel: ObservableObject {
 
     func logAnalytics(
         event: AirSearchBarAnalyticsEvent,
-        parameters: [AirSearchBarAnalyticsParameter: AnalyticsProperty] = [:]
+        parameters: [AirSearchBarAnalyticsParameter: Any] = [:]
     ) {
         analyticsSubject.send((event, parameters))
     }
@@ -58,6 +59,10 @@ public class AirSearchBarViewModel: ObservableObject {
 extension AirSearchBarViewModel {
     public func update(dataSource: [String]) {
         model.dataSource = dataSource.map { SearchItem(title: $0) }
+    }
+
+    public func reset() {
+        searchingText = ""
     }
 }
 

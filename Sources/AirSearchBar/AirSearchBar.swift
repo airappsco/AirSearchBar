@@ -97,7 +97,9 @@ private extension AirSearchBar {
         TextField(
             style.placeholder,
             text: $viewModel.searchingText,
-            onEditingChanged: { _ in },
+            onEditingChanged: { state in
+                viewModel.onEditingChanged.send(state)
+            },
             onCommit: {
                 viewModel.logAnalytics(event: .didFinishSearching, parameters: [.keyword: viewModel.searchingText])
                 viewModel.didFinishSearchKeywordSubject.send(viewModel.searchingText)
@@ -189,6 +191,6 @@ public extension AirSearchBar {
 public extension AirSearchBar {
     typealias AirSearchBarAnalytics = (
         AirSearchBarAnalyticsEvent,
-        [AirSearchBarAnalyticsParameter: AnalyticsProperty]
+        [AirSearchBarAnalyticsParameter: Any]
     )
 }
