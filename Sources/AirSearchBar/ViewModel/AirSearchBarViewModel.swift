@@ -60,6 +60,10 @@ extension AirSearchBarViewModel {
     public func update(dataSource: [String]) {
         model.dataSource = dataSource.map { SearchItem(title: $0) }
     }
+
+    public func reset() {
+        searchingText = ""
+    }
 }
 
 // MARK: - Private Methods
