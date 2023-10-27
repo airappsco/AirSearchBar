@@ -77,6 +77,10 @@ To handle analytics do the following:
 
 You can also check the **[Example project](./AirSearchBarDemo)** for usage.
 
+## Validation
+
+This framework has been validated and tested through integration into our app [Translate Now](https://apps.apple.com/us/app/translate-now-translator/id1348028646).
+
 ## Contributing to Air Apps
 Want to contribute to **Air Apps**? Please refer to the following guide [here](./CONTRIBUTING.md).
 
