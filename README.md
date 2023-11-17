@@ -5,7 +5,7 @@
 ![Static Badge](https://img.shields.io/badge/SPM-compatible-brightgreen)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI--orange)
 
-![AirSearchBar_Project Banner_Github](https://github.com/airappsco/AirSearchBar/assets/122374124/196d8232-a811-42e7-b79c-eed7b864606b)
+![AirSearchBar_Project Banner_Github](https://github.com/airappsco/AirSearchBar/assets/107951300/e91864f8-e737-4b89-a850-6f8ad56e1687)
 
 ## 📋 Requirements
 
