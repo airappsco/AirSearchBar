@@ -14,7 +14,7 @@
 - Swift 5.0+
 
 > | UIKit | SwiftUI | AirSearchBar |
-> |---|---|---|---|
+> |---|---|---|
 > | iOS 12+ | iOS 13+ | `feature/ios-12-support` |
 > | iOS 15+ | iOS 15+ | ~> 1.0.0 |
 
