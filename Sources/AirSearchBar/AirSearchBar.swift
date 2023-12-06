@@ -211,6 +211,7 @@ public extension AirSearchBar {
     )
 }
 
+@available(iOS 15.0, *)
 private enum Dimensions {
     static let cornerRadius: CGFloat = 34
     static let backgroundInsets: CGFloat = 0.5
