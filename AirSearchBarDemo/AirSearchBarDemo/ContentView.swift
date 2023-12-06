@@ -19,7 +19,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            Color.white
+            Color(uiColor: UIColor.systemBackground)
                 .edgesIgnoringSafeArea(.all)
 
             Button {
