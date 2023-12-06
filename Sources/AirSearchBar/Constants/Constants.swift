@@ -42,6 +42,6 @@ extension Color {
     }
 
     public static var backgroundColor: Color {
-        Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1.0) : .white })
+        Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1) : UIColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1) })
     }
 }

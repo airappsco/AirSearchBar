@@ -5,7 +5,18 @@
 ![Static Badge](https://img.shields.io/badge/SPM-compatible-brightgreen)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI--orange)
 
-![AirSearchBar_Project Banner_Github](https://github.com/airappsco/AirSearchBar/assets/122374124/196d8232-a811-42e7-b79c-eed7b864606b)
+![AirSearchBar_Project Banner_Github](https://github.com/airappsco/AirSearchBar/assets/107951300/e91864f8-e737-4b89-a850-6f8ad56e1687)
+
+## 📋 Requirements
+
+- iOS 12.0+ (if you use only UIKit/AppKit)
+- iOS 15.0+ (if you use it in SwiftUI)
+- Swift 5.0+
+
+> | UIKit | SwiftUI | AirSearchBar |
+> |---|---|---|---|
+> | iOS 12+ | iOS 13+ | `feature/ios-12-support` |
+> | iOS 15+ | iOS 15+ | ~> 1.0.0 |
 
 
 ## 🌟 Features
@@ -65,6 +76,10 @@ To handle analytics do the following:
 ```
 
 You can also check the **[Example project](./AirSearchBarDemo)** for usage.
+
+## Validation
+
+This framework has been validated and tested through integration into our app [Translate Now](https://apps.apple.com/us/app/translate-now-translator/id1348028646).
 
 ## Contributing to Air Apps
 Want to contribute to **Air Apps**? Please refer to the following guide [here](./CONTRIBUTING.md).
