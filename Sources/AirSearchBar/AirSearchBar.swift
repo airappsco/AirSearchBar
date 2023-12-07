@@ -11,7 +11,7 @@ import SwiftUI
 
 public struct AirSearchBar: View {
     @FocusState var focused: Bool
-
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var viewModel: AirSearchBarViewModel
     @ObservedObject var style: Style
 
@@ -85,6 +85,18 @@ private extension AirSearchBar {
             .padding(.horizontal, Constants.Padding.padding16)
             .opacity(viewModel.searchingText.isEmpty ? 0 : 1)
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: Dimensions.cornerRadius)
+                .inset(by: Dimensions.backgroundInsets)
+                .stroke(
+                    LinearGradient(
+                        gradient: colorScheme == .light ? Dimensions.lightGradientColors : Dimensions.darkGradientColors,
+                        startPoint: .top,
+                        endPoint: .bottom
+                    ),
+                    lineWidth: Dimensions.strokeSize
+                )
+        )
         .background(style.backgroundColor)
         .cornerRadius(Constants.defaultCornerRadius, corners: viewModel.shouldShowSearchResults ? [.bottomLeft, .bottomRight] : [.allCorners])
         .padding(.horizontal, Constants.Padding.padding16)
@@ -193,4 +205,18 @@ public extension AirSearchBar {
         AirSearchBarAnalyticsEvent,
         [AirSearchBarAnalyticsParameter: Any]
     )
+}
+
+private enum Dimensions {
+    static let cornerRadius: CGFloat = 34
+    static let backgroundInsets: CGFloat = 0.5
+    static let strokeSize: CGFloat = 1
+    static let lightGradientColors = Gradient(colors: [
+        Color(red: 1.0, green: 1.0, blue: 1.0),
+        Color(red: 1.0, green: 1.0, blue: 1.0).opacity(0)
+    ])
+    static let darkGradientColors = Gradient(colors: [
+        Color(red: 1.0, green: 1.0, blue: 1.0).opacity(0.15),
+        Color(red: 1.0, green: 1.0, blue: 1.0).opacity(0)
+    ])
 }
