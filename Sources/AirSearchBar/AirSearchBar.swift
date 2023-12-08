@@ -88,7 +88,7 @@ private extension AirSearchBar {
             .opacity(viewModel.searchingText.isEmpty ? 0 : 1)
         }
         .overlay(
-            RoundedRectangle(cornerRadius: Dimensions.cornerRadius)
+            RoundedRectangle(cornerRadius: Constants.defaultCornerRadius)
                 .inset(by: Dimensions.backgroundInsets)
                 .stroke(
                     LinearGradient(

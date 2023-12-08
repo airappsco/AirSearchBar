@@ -12,6 +12,7 @@
 		C004A0852AC31E41002CEA02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C004A0842AC31E41002CEA02 /* Assets.xcassets */; };
 		C004A0882AC31E41002CEA02 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C004A0872AC31E41002CEA02 /* Preview Assets.xcassets */; };
 		C004A0902AC31E5F002CEA02 /* AirSearchBar in Frameworks */ = {isa = PBXBuildFile; productRef = C004A08F2AC31E5F002CEA02 /* AirSearchBar */; };
+		C0B6CEC92B238DDA0000B16E /* AirSearchBar in Frameworks */ = {isa = PBXBuildFile; productRef = C0B6CEC82B238DDA0000B16E /* AirSearchBar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C004A0902AC31E5F002CEA02 /* AirSearchBar in Frameworks */,
+				C0B6CEC92B238DDA0000B16E /* AirSearchBar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +90,7 @@
 			name = AirSearchBarDemo;
 			packageProductDependencies = (
 				C004A08F2AC31E5F002CEA02 /* AirSearchBar */,
+				C0B6CEC82B238DDA0000B16E /* AirSearchBar */,
 			);
 			productName = AirSearchBarDemo;
 			productReference = C004A07D2AC31E40002CEA02 /* AirSearchBarDemo.app */;
@@ -383,6 +386,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		C004A08F2AC31E5F002CEA02 /* AirSearchBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AirSearchBar;
+		};
+		C0B6CEC82B238DDA0000B16E /* AirSearchBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AirSearchBar;
 		};
